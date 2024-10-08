@@ -1,11 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { StateMachineFactory } from '../../lib';
-import { TransitionBlockedByGuardException } from '../../lib/exceptions/transition-blocked-by-guard.exception';
-import { StateMachine } from '../../lib/state-machine';
-import { AppModule } from '../src/app.module';
-import { ProjectTransition, PROJECT_SM_GRAPH } from '../src/constance';
-import { Project } from '../src/project.model';
+import { StateMachine } from '@lib/state-machine';
+import { StateMachineFactory } from '@lib/state-mechine.factory';
+import { TransitionBlockedByGuardException } from '@lib/exceptions/transition-blocked-by-guard.exception';
+import { ProjectTransition, PROJECT_SM_GRAPH } from '@tests/src/constance';
+import { Project } from '@tests/src/project.model';
+import { AppModule } from '@tests/src/app.module';
 
 describe('StateMachineModule - e2e', () => {
   let app: INestApplication;
@@ -81,7 +81,7 @@ describe('StateMachineModule - e2e', () => {
   it(`announce new transitions`, async () => {
     await projectStateMachine.apply(ProjectTransition.START);
     await projectStateMachine.apply(ProjectTransition.FINISH);
-    expect(subject.announcedTranstitionNames).toEqual([
+    expect(subject.announcedTransitionNames).toEqual([
       ProjectTransition.FINISH,
       ProjectTransition.ARCHIVE,
     ]);

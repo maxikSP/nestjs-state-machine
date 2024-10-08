@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { StateMachine } from './state-machine';
-import { STATE_MACHINE_GRAPHS, STATE_MACHINE_STORE } from './tokens';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { GraphInterface } from './interfaces/graph.interface';
-import { SubjectHasNoPropertyException } from './exceptions/subject-has-no-property.exception';
+import { StateMachine } from '@lib/state-machine';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { SubjectHasNoPropertyException } from '@lib/exceptions/subject-has-no-property.exception';
+import { STATE_MACHINE_GRAPHS, STATE_MACHINE_STORE } from '@lib/tokens';
 
 @Injectable()
 export class StateMachineFactory {
@@ -12,8 +12,11 @@ export class StateMachineFactory {
     @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  create<T>(subject: T, graphName: string): StateMachine<T> {
-    const graph = this.graphs.find(graph => graph.name === graphName);
+  public create<T extends object>(
+    subject: T,
+    graphName: string,
+  ): StateMachine<T> {
+    const graph = this.graphs.find((graph) => graph.name === graphName);
 
     if (!graph) {
       throw new Error("Can't find graph with given name: " + graphName);
@@ -23,6 +26,7 @@ export class StateMachineFactory {
       subject,
       graph,
     );
+
     if (!statePropName) {
       throw new SubjectHasNoPropertyException(subject, graph);
     }
@@ -35,12 +39,12 @@ export class StateMachineFactory {
     );
   }
 
-  private findPropertyNameOfSubjectWithGraphState<T>(
+  private findPropertyNameOfSubjectWithGraphState<T extends object>(
     subject: T,
     graph: GraphInterface,
   ): string | undefined {
     // Find property name for given graph
-    return Object.getOwnPropertyNames(subject).find(prop => {
+    return Object.getOwnPropertyNames(subject).find((prop: string) => {
       return (
         Reflect.getMetadata(STATE_MACHINE_STORE, subject, prop) === graph.name
       );

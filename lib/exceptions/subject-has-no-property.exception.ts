@@ -1,8 +1,11 @@
-import { GraphInterface } from '../interfaces/graph.interface';
-import { StateMachineException } from './state-machine.exception';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { StateMachineException } from '@lib/exceptions/state-machine.exception';
 
 export class SubjectHasNoPropertyException<T> extends StateMachineException<T> {
-  constructor(readonly subject: T, readonly graph: GraphInterface) {
+  constructor(
+    readonly subject: T,
+    readonly graph: GraphInterface,
+  ) {
     super(
       subject,
       graph,
