@@ -1,5 +1,5 @@
-import { GraphInterface } from '../interfaces/graph.interface';
-import { TransitionInterface } from '../interfaces/transition.interface';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { TransitionInterface } from '@lib/interfaces/transition.interface';
 
 export abstract class GenericStateMachineEvent<T> {
   protected readonly baseEventName: string = 'state-machine';
@@ -13,7 +13,7 @@ export abstract class GenericStateMachineEvent<T> {
     readonly transition: TransitionInterface,
   ) {}
 
-  getName(): string {
+  public getName(): string {
     return `${this.baseEventName}.${this.graph.name}.${this.eventType}.${this.transition.name}`;
   }
 }

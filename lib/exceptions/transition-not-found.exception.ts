@@ -1,5 +1,5 @@
-import { GraphInterface } from '../interfaces/graph.interface';
-import { StateMachineException } from './state-machine.exception';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { StateMachineException } from '@lib/exceptions/state-machine.exception';
 
 export class TransitionNotFoundException<T> extends StateMachineException<T> {
   constructor(

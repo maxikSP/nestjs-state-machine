@@ -1,5 +1,5 @@
-import { GraphInterface } from '../interfaces/graph.interface';
-import { TransitionInterface } from '../interfaces/transition.interface';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { TransitionInterface } from '@lib/interfaces/transition.interface';
 
 export class StateMachineException<T> extends Error {
   constructor(

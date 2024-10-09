@@ -1,4 +1,4 @@
-import { GenericStateMachineEvent } from './generic-state-machine.event';
+import { GenericStateMachineEvent } from '@lib/events/generic-state-machine.event';
 
 export class GuardEvent<T> extends GenericStateMachineEvent<T> {
   protected readonly eventType: string = 'guard';
@@ -7,18 +7,18 @@ export class GuardEvent<T> extends GenericStateMachineEvent<T> {
 
   private blockingReasons: Array<string> = [];
 
-  setBlocked(reason?: string) {
+  public setBlocked(reason?: string) {
     this.blocked = true;
     if (reason) {
       this.blockingReasons.push(reason);
     }
   }
 
-  isBlocked(): boolean {
+  public isBlocked(): boolean {
     return this.blocked;
   }
 
-  getBlockingReasons(): Array<string> {
+  public getBlockingReasons(): Array<string> {
     return this.blockingReasons;
   }
 }

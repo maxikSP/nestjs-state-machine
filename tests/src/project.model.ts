@@ -1,20 +1,20 @@
-import { StateStore } from '../../lib';
+import { StateStore } from '@lib/decorators/state-store.decorator';
 
 export class Project {
-  name: string = 'test project';
+  public name: string = 'test project';
 
   @StateStore('project')
-  state: string = 'new';
+  public state: string = 'new';
 
-  leave: boolean = false;
+  public leave: boolean = false;
 
-  transition: boolean = false;
+  public transition: boolean = false;
 
-  enter: boolean = false;
+  public enter: boolean = false;
 
-  entered: boolean = false;
+  public entered: boolean = false;
 
-  completed: boolean = false;
+  public completed: boolean = false;
 
-  announcedTranstitionNames: string[] = [];
+  public announcedTransitionNames: string[] = [];
 }

@@ -1,17 +1,17 @@
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { GuardEvent } from './events/guard.event';
-import { EnterStateEvent, EnteredStateEvent } from './events';
-import { TransitionNotFoundException } from './exceptions/transition-not-found.exception';
-import { TransitionCantBeAppliedException } from './exceptions/transition-cant-be-applied.exception';
-import { TransitionBlockedByGuardException } from './exceptions/transition-blocked-by-guard.exception';
-import { GraphInterface } from './interfaces/graph.interface';
-import { TransitionInterface } from './interfaces/transition.interface';
-import { LeaveStateEvent } from './events/leave-state.event';
-import { BeginTransitionEvent } from './events/begin-transition.event';
-import { CompletedTransitionEvent } from './events/completed-transition.event';
-import { AnnounceTransitionsEvent } from './events/announce-transitions.event';
+import { GuardEvent } from '@lib/events';
+import { EnterStateEvent, EnteredStateEvent } from '@lib/events';
+import { TransitionNotFoundException } from '@lib/exceptions/transition-not-found.exception';
+import { TransitionCantBeAppliedException } from '@lib/exceptions/transition-cant-be-applied.exception';
+import { TransitionBlockedByGuardException } from '@lib/exceptions/transition-blocked-by-guard.exception';
+import { TransitionInterface } from '@lib/interfaces/transition.interface';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { LeaveStateEvent } from '@lib/events';
+import { BeginTransitionEvent } from '@lib/events';
+import { CompletedTransitionEvent } from '@lib/events';
+import { AnnounceTransitionsEvent } from '@lib/events';
 
-export class StateMachine<T extends Object> {
+export class StateMachine<T extends object> {
   constructor(
     private readonly subject: T,
     private readonly graph: GraphInterface,
@@ -19,7 +19,7 @@ export class StateMachine<T extends Object> {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async can(transitionName: string): Promise<boolean> {
+  public async can(transitionName: string): Promise<boolean> {
     const transition = this.getTransition(transitionName);
     const fromState = this.getSubjectCurrentState();
 
@@ -28,20 +28,23 @@ export class StateMachine<T extends Object> {
     }
 
     const guardEvent = await this.checkGuards(fromState, transition);
+
     return !guardEvent.isBlocked();
   }
 
-  getAvailableTransitions(): TransitionInterface[] {
+  public getAvailableTransitions(): TransitionInterface[] {
     const state = this.getSubjectCurrentState();
-    return this.graph.transitions.filter(transition =>
+
+    return this.graph.transitions.filter((transition) =>
       transition.from.includes(state),
     );
   }
 
-  async apply(transitionName: string): Promise<void> {
+  public async apply(transitionName: string): Promise<void> {
     const transition = this.getTransition(transitionName);
 
     const fromState = this.getSubjectCurrentState();
+
     if (!transition.from.includes(fromState)) {
       throw new TransitionCantBeAppliedException(
         this.subject,
@@ -53,6 +56,7 @@ export class StateMachine<T extends Object> {
 
     // Check Guards
     const guardEvent = await this.checkGuards(fromState, transition);
+
     if (guardEvent.isBlocked()) {
       throw new TransitionBlockedByGuardException(
         this.subject,
@@ -84,15 +88,17 @@ export class StateMachine<T extends Object> {
     await this.completedTransition(fromState, transition);
 
     // AnnounceTransactionsEvent
-    this.getAvailableTransitions().forEach(async availableTransition => {
+    for (const availableTransition of this.getAvailableTransitions()) {
       await this.announceTransactions(fromState, availableTransition);
-    });
+    }
   }
 
   private getTransition(transitionName: string): TransitionInterface {
-    const transition = this.graph.transitions.find(
-      transition => transition.name === transitionName,
-    );
+    const transition: TransitionInterface | undefined =
+      this.graph.transitions.find(
+        (transition: TransitionInterface) => transition.name === transitionName,
+      );
+
     if (!transition) {
       throw new TransitionNotFoundException(
         this.subject,
@@ -100,6 +106,7 @@ export class StateMachine<T extends Object> {
         transitionName,
       );
     }
+
     return transition;
   }
 
@@ -120,6 +127,7 @@ export class StateMachine<T extends Object> {
       transition,
     );
     await this.eventEmitter.emitAsync(guardEvent.getName(), guardEvent);
+
     return guardEvent;
   }
 
@@ -133,6 +141,7 @@ export class StateMachine<T extends Object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(
       leaveStateEvent.getName(),
       leaveStateEvent,
@@ -149,6 +158,7 @@ export class StateMachine<T extends Object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(
       beginTransitionEvent.getName(),
       beginTransitionEvent,
@@ -165,6 +175,7 @@ export class StateMachine<T extends Object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(
       enterStateEvent.getName(),
       enterStateEvent,
@@ -181,6 +192,7 @@ export class StateMachine<T extends Object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(
       eneteredStateEvent.getName(),
       eneteredStateEvent,
@@ -197,6 +209,7 @@ export class StateMachine<T extends Object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(
       completeTransitionEvent.getName(),
       completeTransitionEvent,
@@ -213,6 +226,7 @@ export class StateMachine<T extends Object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(
       announceTransactionsEvent.getName(),
       announceTransactionsEvent,

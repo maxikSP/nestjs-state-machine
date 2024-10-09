@@ -1,9 +1,9 @@
-import { GraphInterface } from '../interfaces/graph.interface';
-import { TransitionInterface } from '../interfaces/transition.interface';
-import { StateMachineException } from './state-machine.exception';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { TransitionInterface } from '@lib/interfaces/transition.interface';
+import { StateMachineException } from '@lib/exceptions/state-machine.exception';
 
 export class TransitionBlockedByGuardException<
-  T
+  T,
 > extends StateMachineException<T> {
   constructor(
     readonly subject: T,

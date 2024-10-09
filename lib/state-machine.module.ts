@@ -1,11 +1,11 @@
 import { DynamicModule, Provider } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { GraphInterface } from './interfaces/graph.interface';
-import { StateMachineFactory } from './state-mechine.factory';
-import { STATE_MACHINE_GRAPHS } from './tokens';
+import { StateMachineFactory } from '@lib/state-mechine.factory';
+import { GraphInterface } from '@lib/interfaces/graph.interface';
+import { STATE_MACHINE_GRAPHS } from '@lib/tokens';
 
 export class StateMachineModule {
-  static forRoot(graphs: GraphInterface[]): DynamicModule {
+  public static forRoot(graphs: GraphInterface[]): DynamicModule {
     const graphsProvider: Provider = {
       provide: STATE_MACHINE_GRAPHS,
       useValue: graphs,
