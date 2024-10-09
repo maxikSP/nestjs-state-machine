@@ -1,10 +1,10 @@
 {
-  "name": "@depthlabs/nestjs-state-machine",
+  "name": "@maxiksp/nestjs-state-machine",
   "version": "0.0.2",
   "description": "Finite State Machine for Nestjs framework",
   "author": "Tomasz Felczyk",
   "license": "MIT",
-  "url": "https://github.com/depthlabs-io/nestjs-state-machine",
+  "url": "https://github.com/maxikSP/nestjs-state-machine",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -18,6 +18,7 @@
     "publish:next": "npm publish --access public --tag next",
     "test:e2e": "jest --config ./tests/jest-e2e.json --runInBand",
     "prerelease": "npm run build",
+    "prepare": "npm run build",
     "release": "release-it"
   },
   "lint-staged": {
@@ -32,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/depthlabs-io/nestjs-state-machine"
+    "url": "https://github.com/maxikSP/nestjs-state-machine"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.4",
