@@ -4,7 +4,7 @@
   "description": "Finite State Machine for Nestjs framework",
   "author": "Tomasz Felczyk",
   "license": "MIT",
-  "url": "https://github.com/depthlabs-io/nestjs-state-machine",
+  "url": "https://github.com/maxikSP/nestjs-state-machine.git",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -33,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/depthlabs-io/nestjs-state-machine"
+    "url": "https://github.com/maxikSP/nestjs-state-machine.git"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.4",
