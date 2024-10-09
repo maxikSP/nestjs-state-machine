@@ -1,3 +1,4 @@
+export * from './exceptions';
 export * from './decorators';
 export * from './events';
 export * from './tokens';
