@@ -1,5 +1,5 @@
 {
-  "name": "@depthlabs/nestjs-state-machine",
+  "name": "@maxiksp/nestjs-state-machine",
   "version": "0.0.2",
   "description": "Finite State Machine for Nestjs framework",
   "author": "Tomasz Felczyk",
