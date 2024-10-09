@@ -1,6 +1,6 @@
 {
   "name": "@maxiksp/nestjs-state-machine",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Finite State Machine for Nestjs framework",
   "author": "Tomasz Felczyk",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
+    "publish:dry-run": "npm publish --access public --dry-run",
     "test:e2e": "jest --config ./tests/jest-e2e.json --runInBand",
     "prerelease": "npm run build",
     "prepare": "npm run build",
