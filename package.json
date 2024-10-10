@@ -1,6 +1,6 @@
 {
-  "name": "@maxiksp/nestjs-state-machine",
-  "version": "0.0.5",
+  "name": "@rqb/nestjs-state-machine",
+  "version": "0.0.3",
   "description": "Finite State Machine for Nestjs framework",
   "author": "Tomasz Felczyk",
   "license": "MIT",
@@ -9,7 +9,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "format": "prettier --write \"lib/**/*.ts\" \"tests/**/*.ts\"",
-    "build": "rimraf -rf dist && tsc -p tsconfig.json",
+    "build": "rimraf -rf dist && tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "dev": "tsc -p tsconfig.json -w",
     "lint": "eslint 'lib/**/*.ts' --fix",
     "prepublish:npm": "npm run build",
@@ -60,6 +60,7 @@
     "rimraf": "^6.0.1",
     "rxjs": "^7.8.1",
     "ts-jest": "^29.2.5",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.6.2"
   }
 }
