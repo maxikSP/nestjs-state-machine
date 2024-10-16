@@ -20,30 +20,34 @@ export class StateMachine<T extends object> {
   ) {}
 
   public async can(transitionName: string): Promise<boolean> {
-    const transition = this.getTransition(transitionName);
-    const fromState = this.getSubjectCurrentState();
+    const transition: TransitionInterface = this.getTransition(transitionName);
+    const fromState: string = this.getSubjectCurrentState();
 
     if (!transition.from.includes(fromState)) {
       return false;
     }
 
-    const guardEvent = await this.checkGuards(fromState, transition);
+    const guardEvent: GuardEvent<T> = await this.checkGuards(
+      fromState,
+      transition,
+    );
 
     return !guardEvent.isBlocked();
   }
 
   public getAvailableTransitions(): TransitionInterface[] {
-    const state = this.getSubjectCurrentState();
+    const state: string = this.getSubjectCurrentState();
 
-    return this.graph.transitions.filter((transition) =>
-      transition.from.includes(state),
+    return this.graph.transitions.filter(
+      (transition: TransitionInterface): boolean =>
+        transition.from.includes(state),
     );
   }
 
   public async apply(transitionName: string): Promise<void> {
-    const transition = this.getTransition(transitionName);
+    const transition: TransitionInterface = this.getTransition(transitionName);
 
-    const fromState = this.getSubjectCurrentState();
+    const fromState: string = this.getSubjectCurrentState();
 
     if (!transition.from.includes(fromState)) {
       throw new TransitionCantBeAppliedException(
@@ -55,7 +59,10 @@ export class StateMachine<T extends object> {
     }
 
     // Check Guards
-    const guardEvent = await this.checkGuards(fromState, transition);
+    const guardEvent: GuardEvent<T> = await this.checkGuards(
+      fromState,
+      transition,
+    );
 
     if (guardEvent.isBlocked()) {
       throw new TransitionBlockedByGuardException(
@@ -96,7 +103,8 @@ export class StateMachine<T extends object> {
   private getTransition(transitionName: string): TransitionInterface {
     const transition: TransitionInterface | undefined =
       this.graph.transitions.find(
-        (transition: TransitionInterface) => transition.name === transitionName,
+        (transition: TransitionInterface): boolean =>
+          transition.name === transitionName,
       );
 
     if (!transition) {
@@ -126,6 +134,7 @@ export class StateMachine<T extends object> {
       fromState,
       transition,
     );
+
     await this.eventEmitter.emitAsync(guardEvent.getName(), guardEvent);
 
     return guardEvent;
@@ -186,7 +195,7 @@ export class StateMachine<T extends object> {
     fromState: string,
     transition: TransitionInterface,
   ): Promise<void> {
-    const eneteredStateEvent = new EnteredStateEvent<T>(
+    const enteredStateEvent = new EnteredStateEvent<T>(
       this.subject,
       this.graph,
       fromState,
@@ -194,8 +203,8 @@ export class StateMachine<T extends object> {
     );
 
     await this.eventEmitter.emitAsync(
-      eneteredStateEvent.getName(),
-      eneteredStateEvent,
+      enteredStateEvent.getName(),
+      enteredStateEvent,
     );
   }
 
