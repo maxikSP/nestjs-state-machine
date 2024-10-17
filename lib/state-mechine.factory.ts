@@ -8,7 +8,7 @@ import { STATE_MACHINE_GRAPHS, STATE_MACHINE_STORE } from '@lib/tokens';
 @Injectable()
 export class StateMachineFactory {
   constructor(
-    @Inject(STATE_MACHINE_GRAPHS) private graphs: GraphInterface[],
+    @Inject(STATE_MACHINE_GRAPHS) private readonly graphs: GraphInterface[],
     @Inject(EventEmitter2) private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -16,16 +16,16 @@ export class StateMachineFactory {
     subject: T,
     graphName: string,
   ): StateMachine<T> {
-    const graph = this.graphs.find((graph) => graph.name === graphName);
+    const graph: GraphInterface | undefined = this.graphs.find(
+      (graph: GraphInterface): boolean => graph.name === graphName,
+    );
 
     if (!graph) {
       throw new Error("Can't find graph with given name: " + graphName);
     }
 
-    const statePropName = this.findPropertyNameOfSubjectWithGraphState(
-      subject,
-      graph,
-    );
+    const statePropName: string | undefined =
+      this.findPropertyNameOfSubjectWithGraphState(subject, graph);
 
     if (!statePropName) {
       throw new SubjectHasNoPropertyException(subject, graph);
@@ -44,10 +44,9 @@ export class StateMachineFactory {
     graph: GraphInterface,
   ): string | undefined {
     // Find property name for given graph
-    return Object.getOwnPropertyNames(subject).find((prop: string) => {
-      return (
-        Reflect.getMetadata(STATE_MACHINE_STORE, subject, prop) === graph.name
-      );
-    });
+    return Object.getOwnPropertyNames(subject).find(
+      (prop: string): boolean =>
+        Reflect.getMetadata(STATE_MACHINE_STORE, subject, prop) === graph.name,
+    );
   }
 }
