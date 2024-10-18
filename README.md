@@ -115,10 +115,10 @@ import { StateStore } from '@rqb/nestjs-state-machine';
 import { PROJECT_GRAPH, ProjectState } from './constants';
 
 export class Project {
-    name: string;
+    public name: string;
 
     @StateStore(PROJECT_GRAPH)
-    state: string = ProjectState.NEW;
+    public state: string = ProjectState.NEW;
 
 }
 ```
@@ -144,9 +144,9 @@ constructor(
 ) {}
 ```
 
-Create state machine with instance of `Project` model as subject in first argument of factory and with graph name in second.
+Create state machine with instance of `Project` model as subject in first argument of factory and with graph name in second. Optionally you can expose `const context = { name: 'value' }` as third argument and later process it in listeners or guards.'
 ```typescript
-const projectStateMachine = this.stateMachineFactory.create<Project>(project, PROJECT_GRAPH)
+const projectStateMachine = this.stateMachineFactory.create<Project>(project, PROJECT_GRAPH, context)
 ```
 
 ## State Machine methods
@@ -185,7 +185,10 @@ export class ProjectCantBeNamedBlockmeGuard {
 
     // Graph name in first argument, transition name in second
     @OnGuard(PROJECT_GRAPH, ProjectTransition.START)
-    handle(event: GuardEvent<Project>) {
+    public handle(event: GuardEvent<Project>) {
+        // event.context is a third parameter from state machine factory
+        const name = event.context['name'];
+
         // event.subject is our Project instance
         if (event.subject.name == 'blockme') { // if name isn't allowed for some reasons
             event.setBlocked('transition-blocked'); // block transition using setBlocked() method
@@ -253,7 +256,7 @@ export class NotifyTeamAboutFinishedTask {
 
     // Graph name in first argument, transition name in second. Third if truem method is async.
     @OnCompletedTransition(PROJECT_GRAPH, ProjectTransition.FINISH, true)
-    async handle(event: CompletedTransitionEvent<Project>) {
+    public async handle(event: CompletedTransitionEvent<Project>) {
         // Send emails to all users in team
     }
 

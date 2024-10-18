@@ -5,6 +5,7 @@ import { StateMachineFactory } from '@lib/state-mechine.factory';
 import { TransitionBlockedByGuardException } from '@lib/exceptions/transition-blocked-by-guard.exception';
 import { ProjectTransition, PROJECT_SM_GRAPH } from '@tests/src/constance';
 import { Project } from '@tests/src/project.model';
+import { Context } from '@tests/src/context.model';
 import { AppModule } from '@tests/src/app.module';
 
 describe('StateMachineModule - e2e', () => {
@@ -15,6 +16,7 @@ describe('StateMachineModule - e2e', () => {
   let projectStateMachine: StateMachine<Project>;
 
   let subject: Project = new Project();
+  let context: Context = new Context();
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -26,6 +28,7 @@ describe('StateMachineModule - e2e', () => {
     projectStateMachine = stateMachineFactory.create<Project>(
       subject,
       PROJECT_SM_GRAPH,
+      context,
     );
     await app.init();
   });
@@ -75,6 +78,7 @@ describe('StateMachineModule - e2e', () => {
     expect(subject.enter).toBeTruthy();
     expect(subject.entered).toBeTruthy();
     expect(subject.completed).toBeTruthy();
+    expect(context.processed).toBeTruthy();
   });
 
   // Announce
