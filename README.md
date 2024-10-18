@@ -6,7 +6,7 @@ Finite State Machine module for [Nest](https://github.com/nestjs/nest).
 
 Install package:
 ```bash
-$ npm i --save @depthlabs/nestjs-state-machine
+$ npm i --save @rqb/nestjs-state-machine
 ```
 
 For example, we will map the following state machine:
@@ -17,7 +17,7 @@ For example, we will map the following state machine:
 After installation, import StateMachineModule into your root module with state machine graph configurations:
 ```typescript
 // app.module.ts
-import { StateMachineModule } from '@depthlabs/nestjs-state-machine';
+import { StateMachineModule } from '@rqb/nestjs-state-machine';
 
 @Module({
   imports: [
@@ -78,7 +78,7 @@ export enum ProjectTransition {
 and then:
 
 ```typescript
-import { StateMachineModule } from '@depthlabs/nestjs-state-machine';
+import { StateMachineModule } from '@rqb/nestjs-state-machine';
 import { PROJECT_GRAPH, ProjectState, ProjectTransition } from './constants';
 
 // ...
@@ -111,7 +111,7 @@ StateMachineModule.forRoot([
 Next, create model or use your exisiting model and decorate property which will be responsible for storing state of model:
 ```typescript
 // project.model.ts
-import { StateStore } from '@depthlabs/nestjs-state-machine';
+import { StateStore } from '@rqb/nestjs-state-machine';
 import { PROJECT_GRAPH, ProjectState } from './constants';
 
 export class Project {
@@ -122,7 +122,7 @@ export class Project {
 
 }
 ```
-`@StateStore` takes one argument with graph name (string). Thanks to this one model can handle more then many graphs: 
+`@StateStore` takes one argument with graph name (string). Thanks to this one model can handle more then many graphs:
 ```typescript
 @StateStore(PROJECT_GRAPH)
 state: string = ProjectState.NEW;
@@ -135,7 +135,7 @@ At this point we can create our state machine. First inject `StateMachineFactory
 
 
 ```typescript
-import { StateMachineFactory } from '@depthlabs/nestjs-state-machine';
+import { StateMachineFactory } from '@rqb/nestjs-state-machine';
 
 // ...
 
@@ -148,7 +148,7 @@ Create state machine with instance of `Project` model as subject in first argume
 ```typescript
 const projectStateMachine = this.stateMachineFactory.create<Project>(project, PROJECT_GRAPH)
 ```
-    
+
 ## State Machine methods
 
 Apply transition:
@@ -170,14 +170,14 @@ Get all possible transitions:
 await projectStateMachine.getAvailableTransitions()
 // return TransitionInterface[];
 ```
-    
+
 ## Guards
 
-You can create guards to block transitions.  
+You can create guards to block transitions.
 To declare an `Guard`, decorate a method with the `@OnGuard()` decorator:
 
 ```typescript
-import { GuardEvent, OnGuard } from '@depthlabs/nestjs-state-machine';
+import { GuardEvent, OnGuard } from '@rqb/nestjs-state-machine';
 import { ProjectTransition, PROJECT_GRAPH } from '../constance';
 import { Project } from '../project.model';
 
@@ -230,14 +230,14 @@ projectStateMachine.getAvailableTransitions()
 
 You can create transition event listeners to do additional actions when a state machine operation happened (e.g. sending emails, recalculate)
 
-When a state transition is initiated, the events are dispatched in the following order:  
+When a state transition is initiated, the events are dispatched in the following order:
 
 | Order | Event | Decorator | Decorator second argument |
 |-|-|-|-|
 | 1 | LeaveState<br><small><small>(The subject is about to leave a place). | OnLeaveState | State name |
 | 2 | BeginTransition<br><small>(The subject is going through this transition.)</small> | OnBeginTransition | Transition name |
 | 3 | EnterState<br><small>(The subject is about to enter a new place. This event is triggered right before the subject places are updated.)</small> | OnEnterState | State name |
-| 4 | -> Change of state 
+| 4 | -> Change of state
 | 5 | EnteredState<br><small>(The subject has entered in the places and the marking is updated.)</small> | OnEnteredState | State name |
 | 6 | CompletedTransition<br><small>(The object has completed this transition.)</small> | OnCompletedTransition | Transition name |
 | 7 | AnnounceTransitions<br><small>(Triggered for each transition that now is accessible for the subject.)</small> | OnAnnounceTransitions | State name |
@@ -245,7 +245,7 @@ When a state transition is initiated, the events are dispatched in the following
 
 Example:
 ```typescript
-import { OnCompletedTransition, CompletedTransitionEvent } from '@depthlabs/nestjs-state-machine';
+import { OnCompletedTransition, CompletedTransitionEvent } from '@rqb/nestjs-state-machine';
 import { ProjectTransition, PROJECT_GRAPH } from '../constance';
 import { Project } from '../project.model';
 
