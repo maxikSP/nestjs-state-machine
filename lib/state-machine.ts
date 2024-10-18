@@ -17,6 +17,7 @@ export class StateMachine<T extends object> {
     private readonly graph: GraphInterface,
     private readonly statePropName: string,
     private readonly eventEmitter: EventEmitter2,
+    private readonly context: any = null,
   ) {}
 
   public async can(transitionName: string): Promise<boolean> {
@@ -131,6 +132,7 @@ export class StateMachine<T extends object> {
     const guardEvent = new GuardEvent<T>(
       this.subject,
       this.graph,
+      this.context,
       fromState,
       transition,
     );
@@ -147,6 +149,7 @@ export class StateMachine<T extends object> {
     const leaveStateEvent = new LeaveStateEvent<T>(
       this.subject,
       this.graph,
+      this.subject,
       fromState,
       transition,
     );
@@ -164,6 +167,7 @@ export class StateMachine<T extends object> {
     const beginTransitionEvent = new BeginTransitionEvent<T>(
       this.subject,
       this.graph,
+      this.subject,
       fromState,
       transition,
     );
@@ -181,6 +185,7 @@ export class StateMachine<T extends object> {
     const enterStateEvent = new EnterStateEvent<T>(
       this.subject,
       this.graph,
+      this.subject,
       fromState,
       transition,
     );
@@ -198,6 +203,7 @@ export class StateMachine<T extends object> {
     const enteredStateEvent = new EnteredStateEvent<T>(
       this.subject,
       this.graph,
+      this.subject,
       fromState,
       transition,
     );
@@ -215,6 +221,7 @@ export class StateMachine<T extends object> {
     const completeTransitionEvent = new CompletedTransitionEvent<T>(
       this.subject,
       this.graph,
+      this.subject,
       fromState,
       transition,
     );
@@ -232,6 +239,7 @@ export class StateMachine<T extends object> {
     const announceTransactionsEvent = new AnnounceTransitionsEvent<T>(
       this.subject,
       this.graph,
+      this.subject,
       fromState,
       transition,
     );

@@ -7,5 +7,6 @@ export class AnnounceListener {
   @OnAnnounceTransitions(PROJECT_SM_GRAPH)
   handle(event: LeaveStateEvent<Project>) {
     event.subject.announcedTransitionNames.push(event.transition.name);
+    event.context.processed = true;
   }
 }

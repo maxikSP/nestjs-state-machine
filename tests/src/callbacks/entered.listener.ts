@@ -7,5 +7,6 @@ export class EnteredListener {
   @OnEnteredState(PROJECT_SM_GRAPH, ProjectState.IN_PROGRESS)
   handle(event: EnteredStateEvent<Project>) {
     event.subject.entered = true;
+    event.context.processed = true;
   }
 }

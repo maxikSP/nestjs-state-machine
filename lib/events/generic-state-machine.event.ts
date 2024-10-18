@@ -9,6 +9,7 @@ export abstract class GenericStateMachineEvent<T> {
   constructor(
     readonly subject: T,
     readonly graph: GraphInterface,
+    readonly context: any,
     readonly fromState: string,
     readonly transition: TransitionInterface,
   ) {}

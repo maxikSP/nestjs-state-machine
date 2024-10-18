@@ -15,6 +15,7 @@ export class StateMachineFactory {
   public create<T extends object>(
     subject: T,
     graphName: string,
+    context: any = null,
   ): StateMachine<T> {
     const graph: GraphInterface | undefined = this.graphs.find(
       (graph: GraphInterface): boolean => graph.name === graphName,
@@ -36,6 +37,7 @@ export class StateMachineFactory {
       graph,
       statePropName,
       this.eventEmitter,
+      context,
     );
   }
 
