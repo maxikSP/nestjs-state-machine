@@ -7,5 +7,6 @@ export class LeaveListener {
   @OnLeaveState(PROJECT_SM_GRAPH, ProjectState.NEW)
   handle(event: LeaveStateEvent<Project>) {
     event.subject.leave = true;
+    event.context.processed = true;
   }
 }

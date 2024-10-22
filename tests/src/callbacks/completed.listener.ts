@@ -7,5 +7,6 @@ export class CompletedListener {
   @OnCompletedTransition(PROJECT_SM_GRAPH, ProjectTransition.START)
   handle(event: CompletedTransitionEvent<Project>) {
     event.subject.completed = true;
+    event.context.processed = true;
   }
 }

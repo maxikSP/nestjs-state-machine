@@ -7,5 +7,6 @@ export class TransitionListener {
   @OnBeginTransition(PROJECT_SM_GRAPH, ProjectTransition.START)
   handle(event: BeginTransitionEvent<Project>) {
     event.subject.transition = true;
+    event.context.processed = true;
   }
 }
